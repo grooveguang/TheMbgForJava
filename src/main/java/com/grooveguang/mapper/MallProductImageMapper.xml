@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grooveguang.mapper.MallProductImageMapper">
+  <resultMap id="BaseResultMap" type="com.grooveguang.bean.MallProductImage">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="zy" jdbcType="VARCHAR" property="zy" />
+    <result column="shp_id" jdbcType="INTEGER" property="shpId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_mall_product_image
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.grooveguang.bean.MallProductImage">
+    insert into t_mall_product_image (Id, zy, shp_id, 
+      url)
+    values (#{id,jdbcType=INTEGER}, #{zy,jdbcType=VARCHAR}, #{shpId,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.grooveguang.bean.MallProductImage">
+    update t_mall_product_image
+    set zy = #{zy,jdbcType=VARCHAR},
+      shp_id = #{shpId,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, zy, shp_id, url
+    from t_mall_product_image
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Id, zy, shp_id, url
+    from t_mall_product_image
+  </select>
+  
+  <!-- void insertProductImage(@Param("shpId")Integer shpId,@Param("imgNames") List<String> img_names); -->
+  <insert id="insertProductImage" >
+    insert into t_mall_product_image (shp_id, 
+      url)
+    values 
+    <foreach collection="imgNames" item="img" separator=",">
+       (#{shpId},#{img})
+    </foreach>
+  </insert>
+  
+  <!-- List<MallProductImage> selectProductImageByShpId(Integer shpId); -->
+    <select id="selectProductImageByShpId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, zy, shp_id, url
+    from t_mall_product_image
+    where shp_id = #{shpId}
+    </select>
+</mapper>

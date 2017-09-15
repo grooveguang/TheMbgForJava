@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grooveguang.mapper.MallAttrMapper">
+  <resultMap id="BaseResultMap" type="com.grooveguang.bean.MallAttr">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="shxm_mch" jdbcType="VARCHAR" property="shxmMch" />
+    <result column="shfqy" jdbcType="VARCHAR" property="shfqy" />
+    <result column="flbh2" jdbcType="INTEGER" property="flbh2" />
+    <result column="chjshj" jdbcType="TIMESTAMP" property="chjshj" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_mall_attr
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.grooveguang.bean.MallAttr">
+    insert into t_mall_attr (Id, shxm_mch, shfqy, 
+      flbh2, chjshj)
+    values (#{id,jdbcType=INTEGER}, #{shxmMch,jdbcType=VARCHAR}, #{shfqy,jdbcType=VARCHAR}, 
+      #{flbh2,jdbcType=INTEGER}, #{chjshj,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.grooveguang.bean.MallAttr">
+    update t_mall_attr
+    set shxm_mch = #{shxmMch,jdbcType=VARCHAR},
+      shfqy = #{shfqy,jdbcType=VARCHAR},
+      flbh2 = #{flbh2,jdbcType=INTEGER},
+      chjshj = #{chjshj,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, shxm_mch, shfqy, flbh2, chjshj
+    from t_mall_attr
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Id, shxm_mch, shfqy, flbh2, chjshj
+    from t_mall_attr
+  </select>
+  
+  <!-- List<ObjectMallAttrWithMallValue> selectAttrListByFlbh2(Integer flbh2); -->
+  <select id="selectAttrListByFlbh2" resultMap="selectAttrListByFlbh2Map">
+      select attr.id as attr_id,val.id as value_id,attr.*,val.*
+      from t_mall_attr attr,t_mall_value val
+      where attr.id = val.shxm_id and attr.flbh2 = #{flbh2}
+  </select>
+  
+  <resultMap type="com.grooveguang.bean.ObjectMallAttrWithMallValue" id="selectAttrListByFlbh2Map"
+		autoMapping="true">
+		<result column="attr_id" property="id" />
+		<result column="shxm_mch"  property="shxmMch" />
+		<result column="shfqy"   property="shfqy" />
+	    <result column="flbh2"   property="flbh2" />
+	    <result column="chjshj"  property="chjshj" />
+	       
+		<collection ofType="com.grooveguang.bean.MallValue"
+			property="mallValueList" autoMapping="true">
+			<result column="val_id" property="id"/>
+			<result column="shxzh"  property="shxzh" />
+		    <result column="shfqy"  property="shfqy" />
+		    <result column="shxm_id"  property="shxmId" />
+		    <result column="shxzh_mch"  property="shxzhMch" />
+		    <result column="chjshj"  property="chjshj" />
+		</collection>
+	</resultMap>
+  
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grooveguang.mapper.MallProductMapper">
+  <resultMap id="BaseResultMap" type="com.grooveguang.bean.MallProduct">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="shp_mch" jdbcType="VARCHAR" property="shpMch" />
+    <result column="shp_tp" jdbcType="VARCHAR" property="shpTp" />
+    <result column="flbh1" jdbcType="INTEGER" property="flbh1" />
+    <result column="flbh2" jdbcType="INTEGER" property="flbh2" />
+    <result column="pp_id" jdbcType="INTEGER" property="ppId" />
+    <result column="chjshj" jdbcType="TIMESTAMP" property="chjshj" />
+    <result column="shp_msh" jdbcType="VARCHAR" property="shpMsh" />
+  </resultMap>
+  
+  <!-- List<MallProduct> selectProductByFlbh1AndFlbh2(Integer int_flbh1, Integer int_flbh2); -->
+   <select id="selectProductByFlbh1AndFlbh2" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, shp_mch, shp_tp, flbh1, flbh2, pp_id, chjshj, shp_msh
+    from t_mall_product
+    where flbh1 = #{flbh1} and flbh2 = #{flbh2}
+   </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_mall_product
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" useGeneratedKeys="true" keyColumn="id"
+		keyProperty="id" parameterType="com.grooveguang.bean.MallProduct">
+    insert into t_mall_product (
+      shp_mch,shp_tp,flbh1,flbh2,pp_id,shp_msh)
+    values (#{shpMch},#{shpTp},#{flbh1},#{flbh2},#{ppId},#{shpMsh})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.grooveguang.bean.MallProduct">
+    update t_mall_product
+    set shp_mch = #{shpMch,jdbcType=VARCHAR},
+      shp_tp = #{shpTp,jdbcType=VARCHAR},
+      flbh1 = #{flbh1,jdbcType=INTEGER},
+      flbh2 = #{flbh2,jdbcType=INTEGER},
+      pp_id = #{ppId,jdbcType=INTEGER},
+      chjshj = #{chjshj,jdbcType=TIMESTAMP},
+      shp_msh = #{shpMsh,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select Id, shp_mch, shp_tp, flbh1, flbh2, pp_id, chjshj, shp_msh
+    from t_mall_product
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Id, shp_mch, shp_tp, flbh1, flbh2, pp_id, chjshj, shp_msh
+    from t_mall_product
+  </select>
+</mapper>
